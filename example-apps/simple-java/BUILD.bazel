@@ -1,0 +1,38 @@
+load("@rules_java//java:defs.bzl", "java_binary")
+load("@io_bazel_rules_docker//java:image.bzl", "java_image")
+load("@io_bazel_rules_docker//container:container.bzl", "container_bundle", "container_image", "container_push")
+
+# java_library(
+#     name = "simple-java-lib",
+#     srcs = glob(["src/main/java/com/example/*.java"]),
+#     visibility = ["//visibility:public"],
+#     deps = [],
+# )
+
+# java_binary(
+#     name = "ProjectRunner",
+#     srcs = glob(["src/main/java/com/example/*.java"]),
+#     main_class = "com.example.ProjectRunner",
+# )
+
+# java_container_image(
+#     main_class = "com.example.ProjectRunner",
+#     runtime_deps = [":simple-java-lib"],
+# )
+
+###### Stock Bazel rules
+
+java_image(
+    name = "bazel-image",
+    srcs = glob(["src/main/java/com/example/*.java"]),
+    main_class = "com.example.ProjectRunner",
+)
+
+container_push(
+    name = "bazel-image.push",
+    image = "bazel-image",
+    format = "Docker",
+    registry = "gcr.io/ruairi-testing",
+    repository = "bazel-image",
+    tag = "stock-bazel",
+)
